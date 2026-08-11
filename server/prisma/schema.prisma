@@ -1,0 +1,43 @@
+// Prisma schema for ContractCommander
+// Placeholder models only — no analysis logic yet.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contract {
+  id        String   @id @default(cuid())
+  title     String
+  fileUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clauses      Clause[]
+  riskFindings RiskFinding[]
+}
+
+model Clause {
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id])
+  text       String
+  createdAt  DateTime @default(now())
+
+  riskFindings RiskFinding[]
+}
+
+model RiskFinding {
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id])
+  clauseId   String?
+  clause     Clause?  @relation(fields: [clauseId], references: [id])
+  summary    String
+  severity   String
+  createdAt  DateTime @default(now())
+}
