@@ -1,5 +1,4 @@
 // Prisma schema for ContractCommander
-// Placeholder models only — no analysis logic yet.
 
 generator client {
   provider = "prisma-client-js"
@@ -13,7 +12,10 @@ datasource db {
 model Contract {
   id        String   @id @default(cuid())
   title     String
+  fileName  String?
+  mimeType  String?
   fileUrl   String?
+  rawText   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -25,19 +27,30 @@ model Clause {
   id         String   @id @default(cuid())
   contractId String
   contract   Contract @relation(fields: [contractId], references: [id])
+  index      Int
+  heading    String?
   text       String
+  categories String[] @default([])
   createdAt  DateTime @default(now())
 
   riskFindings RiskFinding[]
 }
 
+// Risk levels: "high" | "medium" | "low"
+// Categories: "liability" | "ip" | "termination" | "data_privacy" | "dispute"
 model RiskFinding {
-  id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id])
-  clauseId   String?
-  clause     Clause?  @relation(fields: [clauseId], references: [id])
-  summary    String
-  severity   String
-  createdAt  DateTime @default(now())
+  id                  String   @id @default(cuid())
+  contractId          String
+  contract            Contract @relation(fields: [contractId], references: [id])
+  clauseId            String?
+  clause              Clause?  @relation(fields: [clauseId], references: [id])
+  agent               String
+  category            String
+  riskLevel           String
+  summary             String
+  evidenceQuote       String
+  suggestion          String
+  flaggedInconsistent Boolean  @default(false)
+  criticNote          String?
+  createdAt           DateTime @default(now())
 }
