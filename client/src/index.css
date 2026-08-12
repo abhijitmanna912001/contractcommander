@@ -1,7 +1,16 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
+  --text-muted: #8b8594;
   --bg: #fff;
+  --surface: #ffffff;
+  --surface-muted: #f6f5f8;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
@@ -10,6 +19,20 @@
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --risk-high: #dc2626;
+  --risk-high-bg: rgba(220, 38, 38, 0.09);
+  --risk-high-border: rgba(220, 38, 38, 0.35);
+  --risk-medium: #c2660a;
+  --risk-medium-bg: rgba(217, 119, 6, 0.12);
+  --risk-medium-border: rgba(217, 119, 6, 0.4);
+  --risk-low: #15803d;
+  --risk-low-bg: rgba(22, 163, 74, 0.1);
+  --risk-low-border: rgba(22, 163, 74, 0.35);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -34,7 +57,10 @@
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
+    --text-muted: #767c8a;
     --bg: #16171d;
+    --surface: #1c1d24;
+    --surface-muted: #23242c;
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;
@@ -43,6 +69,16 @@
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+
+    --risk-high: #f87171;
+    --risk-high-bg: rgba(248, 113, 113, 0.14);
+    --risk-high-border: rgba(248, 113, 113, 0.4);
+    --risk-medium: #fbbf24;
+    --risk-medium-bg: rgba(251, 191, 36, 0.14);
+    --risk-medium-border: rgba(251, 191, 36, 0.4);
+    --risk-low: #4ade80;
+    --risk-low-bg: rgba(74, 222, 128, 0.14);
+    --risk-low-border: rgba(74, 222, 128, 0.4);
   }
 
   #social .button-icon {
@@ -51,11 +87,6 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -64,6 +95,7 @@
 
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 
 h1,

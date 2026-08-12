@@ -1,0 +1,60 @@
+.risk-score {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.risk-score__ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.risk-score__track {
+  fill: none;
+  stroke: var(--surface-muted);
+  stroke-width: 10;
+}
+
+.risk-score__progress {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.risk-score--low .risk-score__progress {
+  stroke: var(--risk-low);
+}
+
+.risk-score--medium .risk-score__progress {
+  stroke: var(--risk-medium);
+}
+
+.risk-score--high .risk-score__progress {
+  stroke: var(--risk-high);
+}
+
+.risk-score__value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.risk-score__number {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: var(--heading);
+  color: var(--text-h);
+  line-height: 1;
+}
+
+.risk-score__max {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+}

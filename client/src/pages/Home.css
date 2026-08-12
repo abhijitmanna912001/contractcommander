@@ -1,0 +1,89 @@
+.page.home {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.home__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.home h1 {
+  font-size: clamp(28px, 9vw, 42px);
+  margin: 2px 0 0;
+  overflow-wrap: break-word;
+}
+
+.home__tagline {
+  max-width: 480px;
+  margin-top: 4px;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.home__status {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-align: left;
+}
+
+.home__status--loading {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.home__status--error {
+  border-color: var(--risk-high-border);
+  background: var(--risk-high-bg);
+}
+
+.home__status-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--text-h);
+}
+
+.home__status-subtitle {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.home__spinner {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 2.5px solid var(--accent-border);
+  border-top-color: var(--accent);
+  animation: home-spin 0.8s linear infinite;
+}
+
+@keyframes home-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
