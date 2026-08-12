@@ -1,0 +1,67 @@
+# Render Blueprint for ContractCommander.
+#
+# Deploy: Render dashboard -> New -> Blueprint -> point at this repo.
+# Render reads this file from the repository root automatically.
+#
+# This defines two resources:
+#   - contractcommander-server  Express + Prisma API, built from server/Dockerfile
+#   - contractcommander-client  Vite/React static site
+#
+# No Postgres database is provisioned here — the server points at an
+# existing external database (currently Neon) via a manually-set
+# DATABASE_URL, not a Render-managed one.
+#
+# Both services build with the REPO ROOT as their working context (not
+# server/ or client/ alone) — this is an npm-workspaces monorepo, so both
+# `npm ci` and the Docker build need to see the shared package-lock.json
+# and every workspace's package.json. See the comment at the top of
+# server/Dockerfile for the same requirement on the Docker side.
+
+services:
+  # --- Backend API ---------------------------------------------------
+  - name: contractcommander-server
+    type: web
+    runtime: docker
+    plan: free # bump before real traffic — free instances spin down when idle
+    region: oregon
+    dockerfilePath: server/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false # set manually in the Render dashboard — points at the
+        # existing external Postgres instance (currently Neon), not a
+        # Render-managed database. Neon connection strings need
+        # ?sslmode=require; Neon's own connection-string page includes it
+        # by default.
+      - key: PORT
+        value: "4000" # matches EXPOSE 4000 in server/Dockerfile
+      - key: ANTHROPIC_API_KEY
+        sync: false # set manually in the Render dashboard — never committed
+      # ANTHROPIC_MODEL is intentionally omitted: server/src/services/llmClient.ts
+      # already defaults to claude-opus-5 when unset. Add it here only to override.
+
+  # --- Frontend --------------------------------------------------------
+  - name: contractcommander-client
+    type: web
+    runtime: static
+    plan: free
+    region: oregon
+    buildCommand: npm ci && npm run build --workspace client
+    staticPublishPath: client/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false # set to contractcommander-server's public URL after its
+        # first deploy (Render assigns the final *.onrender.com hostname,
+        # and may suffix it if "contractcommander-server" is already taken
+        # elsewhere on Render — check the actual URL in the dashboard rather
+        # than assuming it). This is a Vite build-time variable: after
+        # setting or changing it, trigger a new deploy of this service —
+        # a restart alone will not pick up the new value.
+    routes:
+      # React Router (BrowserRouter) owns client-side routes like
+      # /report/:id — without this rewrite, a direct link or refresh on
+      # any non-root path 404s at the static host instead of reaching
+      # the app.
+      - source: "/*"
+        destination: /index.html
