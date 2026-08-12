@@ -1,89 +1,122 @@
-.page.home {
-  max-width: 640px;
+/*
+ * Landing-page palette and typography, scoped entirely to `.landing`.
+ * These redefine the same custom-property names the app's shared
+ * components (UploadZone, FindingCard, DisclaimerBanner) already read
+ * from `:root`, so nesting them inside `.landing` re-themes them for
+ * free — without touching the global tokens the Report page relies on.
+ */
+.landing {
+  --landing-bg: #faf7f1;
+  --landing-bg-alt: #eef1f6;
+  --landing-surface: #ffffff;
+  --landing-surface-muted: #f3eee3;
+  --landing-border: #e4dfd3;
+  --landing-ink: #16202e;
+  --landing-ink-soft: #33425a;
+  --landing-text-muted: #6b7488;
+  --landing-navy: #1f3a5c;
+  --landing-navy-deep: #142839;
+  --landing-navy-bg: rgba(31, 58, 92, 0.08);
+  --landing-navy-border: rgba(31, 58, 92, 0.3);
+  --landing-gold: #c9922b;
+  --landing-gold-deep: #a87418;
+  --landing-gold-soft: rgba(201, 146, 43, 0.14);
+  --landing-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --landing-shadow: 0 20px 40px -20px rgba(22, 32, 46, 0.25);
+
+  /* Re-theme shared/nested components for this page only. */
+  --bg: var(--landing-bg);
+  --surface: var(--landing-surface);
+  --surface-muted: var(--landing-surface-muted);
+  --border: var(--landing-border);
+  --text: var(--landing-ink-soft);
+  --text-h: var(--landing-ink);
+  --text-muted: var(--landing-text-muted);
+  --accent: var(--landing-navy);
+  --accent-bg: var(--landing-navy-bg);
+  --accent-border: var(--landing-navy-border);
+
   display: flex;
   flex-direction: column;
-}
-
-.home__intro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  margin-bottom: 36px;
-}
-
-.home__eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.home h1 {
-  font-size: clamp(28px, 9vw, 42px);
-  margin: 2px 0 0;
-  overflow-wrap: break-word;
-}
-
-.home__tagline {
-  max-width: 480px;
-  margin-top: 4px;
-  color: var(--text);
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.home__status {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin-top: 24px;
-  padding: 18px 20px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--landing-bg);
+  color: var(--landing-ink-soft);
   text-align: left;
+  overflow-x: hidden;
 }
 
-.home__status--loading {
-  border-color: var(--accent-border);
-  background: var(--accent-bg);
+.landing__section {
+  padding: 88px 24px;
+  border-top: 1px solid var(--landing-border);
 }
 
-.home__status--error {
-  border-color: var(--risk-high-border);
-  background: var(--risk-high-bg);
+.landing__section:first-child {
+  border-top: none;
 }
 
-.home__status-title {
-  margin: 0;
+.landing__section--alt {
+  background: var(--landing-bg-alt);
+}
+
+.landing__container {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.landing__prose {
+  max-width: 640px;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--landing-gold-deep);
+  margin-bottom: 14px;
+}
+
+.section-heading {
+  font-family: var(--landing-serif);
   font-weight: 600;
-  font-size: 14.5px;
-  color: var(--text-h);
+  font-size: clamp(26px, 3.4vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  color: var(--landing-ink);
+  margin: 0 0 14px;
 }
 
-.home__status-subtitle {
-  margin: 4px 0 0;
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: var(--text-muted);
+.section-lede {
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--landing-text-muted);
+  max-width: 620px;
 }
 
-.home__spinner {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-  border-radius: 50%;
-  border: 2.5px solid var(--accent-border);
-  border-top-color: var(--accent);
-  animation: home-spin 0.8s linear infinite;
+/* Tasteful, cheap scroll reveal: fade + rise, no animation library. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
-@keyframes home-spin {
-  to {
-    transform: rotate(360deg);
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing__section {
+    padding: 64px 20px;
   }
 }
