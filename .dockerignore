@@ -1,0 +1,35 @@
+# This file applies to the repo-root build context used by
+# server/Dockerfile (npm workspaces requires building from the root —
+# see the comment at the top of that file). A .dockerignore placed
+# inside server/ would have no effect on that build.
+
+# Dependencies — reinstalled fresh inside each build stage
+node_modules
+**/node_modules
+
+# Build output — regenerated inside the image
+dist
+**/dist
+build
+**/build
+
+# Env files — real values are injected by the platform at runtime,
+# never baked into the image
+.env
+.env.*
+
+# Version control / CI metadata
+.git
+.github
+
+# Editor / OS cruft
+.DS_Store
+.vscode
+.idea
+*.log
+
+# Local-only sample data — not needed to build or run the server
+sample-contracts
+
+# AO worker session metadata
+.ao
