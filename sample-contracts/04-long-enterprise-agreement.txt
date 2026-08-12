@@ -1,0 +1,39 @@
+ENTERPRISE SOFTWARE LICENSE AND SERVICES AGREEMENT
+
+This Enterprise Software License and Services Agreement ("Agreement") is entered into between Provider Inc. ("Provider") and Enterprise Customer Ltd. ("Customer").
+
+1. Definitions. "Software" means Provider's proprietary platform, including all updates, patches, and documentation. "Services" means implementation, support, and maintenance services described herein.
+
+2. License Grant. Provider grants Customer a non-exclusive, non-transferable license to use the Software solely for Customer's internal business operations during the Term.
+
+3. Fees and Payment. Customer shall pay the fees set forth in the applicable Order Form. All fees are non-refundable except as expressly stated in this Agreement. Late payments shall accrue interest at 1.5% per month.
+
+4. Term and Renewal. This Agreement shall commence on the Effective Date and continue for an initial term of one (1) year, automatically renewing for successive one-year terms unless either party provides ninety (90) days' written notice of non-renewal.
+
+5. Liability. Provider's total liability under this Agreement shall not exceed the fees paid by Customer in the twelve (12) months preceding the claim. Neither party shall be liable for indirect, incidental, or consequential damages.
+
+6. Indemnification. Provider shall indemnify Customer against third-party claims that the Software infringes a valid patent or copyright, provided Customer promptly notifies Provider of any such claim and cooperates in the defense.
+
+7. Data Security. Provider shall maintain commercially reasonable technical and organizational measures to protect Customer data, including encryption at rest and in transit, and shall notify Customer within 72 hours of any confirmed data breach affecting Customer data.
+
+8. Data Ownership. Customer retains all rights to its data. Provider shall not use Customer data for any purpose other than providing the Services, and shall delete or return Customer data within thirty (30) days following termination of this Agreement.
+
+9. Termination for Cause. Either party may terminate this Agreement immediately if the other party materially breaches this Agreement and fails to cure such breach within thirty (30) days of written notice.
+
+10. Termination for Convenience. Customer may terminate this Agreement for convenience upon sixty (60) days' written notice, subject to payment of fees for services rendered up to the termination date. No refunds shall be provided for pre-paid fees covering periods after termination.
+
+11. Intellectual Property. Provider retains all rights, title, and interest in and to the Software, including all modifications, enhancements, and derivative works, whether or not developed based on Customer's feedback or suggestions.
+
+12. Warranty. Provider warrants that the Software will perform substantially in accordance with its documentation. Provider's sole obligation for breach of this warranty shall be to correct the non-conformity or, if unable to do so, refund the fees paid for the affected period.
+
+13. Confidentiality. Each party agrees to protect the other party's confidential information disclosed under this Agreement using reasonable care, and not to disclose such information to third parties except as required by law.
+
+14. Dispute Resolution. The parties shall first attempt to resolve any dispute through good-faith negotiation. If unresolved within thirty (30) days, either party may pursue mediation before resorting to litigation.
+
+15. Governing Law. This Agreement shall be governed by the laws of the State of New York, without regard to its conflict of laws principles. The parties consent to the exclusive jurisdiction of the courts located in New York County.
+
+16. Force Majeure. Neither party shall be liable for delays or failures in performance resulting from causes beyond its reasonable control, including natural disasters, acts of government, or widespread network outages.
+
+17. Assignment. Neither party may assign this Agreement without the prior written consent of the other party, except in connection with a merger, acquisition, or sale of substantially all assets.
+
+18. Entire Agreement. This Agreement, together with any Order Forms, constitutes the entire agreement between the parties and supersedes all prior agreements or understandings regarding its subject matter.

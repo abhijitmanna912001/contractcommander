@@ -1,0 +1,23 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Mutual Non-Disclosure Agreement ("Agreement") is entered into between Party A and Party B (each a "Party" and collectively the "Parties").
+
+1. Purpose. The Parties wish to explore a potential business relationship and may disclose certain confidential information to one another in connection with that purpose.
+
+2. Confidential Information. Each Party agrees to protect the other Party's confidential information using the same degree of care it uses to protect its own confidential information of similar nature, and no less than reasonable care.
+
+3. Exclusions. Confidential Information does not include information that: (a) is or becomes publicly available through no fault of the receiving Party; (b) was rightfully known to the receiving Party prior to disclosure; (c) is independently developed without use of the disclosing Party's confidential information; or (d) is required to be disclosed by law, provided the receiving Party gives reasonable prior notice where legally permitted.
+
+4. Term. This Agreement shall remain in effect for two (2) years from the date of signing. Confidentiality obligations with respect to information disclosed during the term shall survive for an additional two (2) years thereafter.
+
+5. Liability. Neither Party shall be liable to the other for indirect, incidental, or consequential damages arising from this Agreement. Each Party's total liability under this Agreement shall not exceed $50,000.
+
+6. No License. Nothing in this Agreement grants either Party any rights to the other Party's intellectual property, other than the limited right to use confidential information for the stated purpose.
+
+7. Termination. Either Party may terminate this Agreement upon thirty (30) days' written notice to the other Party. Confidentiality obligations shall survive termination as described in Section 4.
+
+8. Data Handling. Each Party shall promptly delete or return the other Party's confidential information upon written request or upon termination of this Agreement, except as required to retain copies for legal compliance purposes.
+
+9. Governing Law. This Agreement shall be governed by the laws of the State of Delaware. Any disputes shall be resolved in the state or federal courts located in Delaware, and both Parties consent to that jurisdiction.
+
+10. Entire Agreement. This Agreement constitutes the entire understanding between the Parties regarding its subject matter and may only be amended in writing signed by both Parties.

@@ -1,0 +1,23 @@
+MASTER SERVICE AGREEMENT
+
+This Master Service Agreement ("Agreement") is entered into between Client Corp ("Client") and Vendor Solutions LLC ("Vendor").
+
+1. Scope of Services. Vendor shall provide software development and consulting services as described in applicable Statements of Work.
+
+2. Liability. Vendor's liability under this Agreement shall be unlimited and shall include all direct, indirect, incidental, special, and consequential damages arising from any breach, negligence, or other cause, without regard to the form of action.
+
+3. Indemnification. Vendor shall indemnify, defend, and hold harmless Client, its officers, directors, and employees from any and all claims, losses, damages, liabilities, and expenses, regardless of fault or cause, including claims arising from Client's own negligence.
+
+4. Termination. Either party may terminate this Agreement immediately without cause and without prior notice. Upon termination, Vendor shall not be entitled to payment for any work performed but not yet invoiced.
+
+5. Intellectual Property. All work product, deliverables, inventions, and any pre-existing intellectual property, tools, methodologies, or materials contributed or used by Vendor in connection with this Agreement shall be assigned exclusively and irrevocably to Client upon creation, without additional compensation.
+
+6. Confidentiality and Data Handling. Vendor may share Client's confidential information, including any personal data processed under this Agreement, with third-party subcontractors and affiliates at Vendor's sole discretion, without prior notice to or consent from Client. Vendor shall have no obligation to delete or return such data upon termination of this Agreement.
+
+7. Non-Compete. Vendor agrees not to provide similar services to any other client in the same industry for a period of five (5) years following termination of this Agreement, worldwide, without geographic limitation.
+
+8. Governing Law and Dispute Resolution. This Agreement shall be governed by the laws of a jurisdiction to be solely determined by Client at the time any dispute arises. All disputes shall be resolved through binding arbitration administered by an arbitrator selected solely by Client, and Vendor waives any right to a jury trial or class action.
+
+9. Payment Terms. Client shall pay undisputed invoices within ninety (90) days of receipt. Client reserves the right to withhold payment for any reason during an ongoing dispute, without limitation on the duration of such withholding.
+
+10. Amendment. Client may amend the terms of this Agreement unilaterally at any time upon written notice to Vendor, and such amendments shall take effect immediately.
