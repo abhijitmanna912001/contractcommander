@@ -3,24 +3,19 @@
 # Deploy: Render dashboard -> New -> Blueprint -> point at this repo.
 # Render reads this file from the repository root automatically.
 #
-# This defines three resources:
-#   - contractcommander-db      Postgres database
+# This defines two resources:
 #   - contractcommander-server  Express + Prisma API, built from server/Dockerfile
 #   - contractcommander-client  Vite/React static site
+#
+# No Postgres database is provisioned here — the server points at an
+# existing external database (currently Neon) via a manually-set
+# DATABASE_URL, not a Render-managed one.
 #
 # Both services build with the REPO ROOT as their working context (not
 # server/ or client/ alone) — this is an npm-workspaces monorepo, so both
 # `npm ci` and the Docker build need to see the shared package-lock.json
 # and every workspace's package.json. See the comment at the top of
 # server/Dockerfile for the same requirement on the Docker side.
-
-databases:
-  - name: contractcommander-db
-    plan: free # Render's free Postgres tier is time-limited/ephemeral —
-    # switch to a paid plan before a real production launch.
-    region: oregon
-    databaseName: contractcommander
-    user: contractcommander
 
 services:
   # --- Backend API ---------------------------------------------------
@@ -34,9 +29,11 @@ services:
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: contractcommander-db
-          property: connectionString
+        sync: false # set manually in the Render dashboard — points at the
+        # existing external Postgres instance (currently Neon), not a
+        # Render-managed database. Neon connection strings need
+        # ?sslmode=require; Neon's own connection-string page includes it
+        # by default.
       - key: PORT
         value: "4000" # matches EXPOSE 4000 in server/Dockerfile
       - key: ANTHROPIC_API_KEY
