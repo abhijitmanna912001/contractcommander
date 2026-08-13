@@ -46,11 +46,7 @@ export function LandingUploadSection() {
         <div className="upload-section__card">
           <UploadZone onFileSelected={handleFileSelected} disabled={status === "uploading"} />
 
-          {status === "uploading" && fileName && (
-            <div className="upload-section__status upload-section__status--loading">
-              <AnalysisProgress fileName={fileName} />
-            </div>
-          )}
+          {status === "uploading" && fileName && <AnalysisProgress fileName={fileName} />}
 
           {status === "error" && (
             <div className="upload-section__status upload-section__status--error" role="alert">

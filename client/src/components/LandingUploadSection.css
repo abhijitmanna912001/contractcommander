@@ -32,11 +32,6 @@
   background: var(--bg);
 }
 
-.upload-section__status--loading {
-  border-color: var(--accent-border);
-  background: var(--accent-bg);
-}
-
 .upload-section__status--error {
   border-color: var(--risk-high-border);
   background: var(--risk-high-bg);

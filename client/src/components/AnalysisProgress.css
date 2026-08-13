@@ -1,5 +1,12 @@
 .analysis-progress {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-top: 24px;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--accent-border);
+  background: var(--surface);
 }
 
 .analysis-progress__title {
@@ -118,6 +125,12 @@
 
   .analysis-progress__stage--active .analysis-progress__stage-icon {
     animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .analysis-progress {
+    padding: 20px;
   }
 }
 
