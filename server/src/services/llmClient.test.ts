@@ -31,7 +31,19 @@ test("withOverloadRetry retries a 529 and succeeds once the call recovers", asyn
   assert.equal(calls, 3, "expected two retries after two 529s");
 });
 
-test("withOverloadRetry gives up after 2 retries and throws the last error", async () => {
+test("withOverloadRetry retries a 529 three times and succeeds on the last attempt", async () => {
+  let calls = 0;
+  const result = await withOverloadRetry(async () => {
+    calls += 1;
+    if (calls < 4) throw apiError(529, "overloaded");
+    return "ok";
+  });
+
+  assert.equal(result, "ok");
+  assert.equal(calls, 4, "expected the initial attempt plus all 3 retries to succeed");
+});
+
+test("withOverloadRetry gives up after 3 retries and throws the last error", async () => {
   let calls = 0;
   await assert.rejects(
     withOverloadRetry(async () => {
@@ -41,7 +53,7 @@ test("withOverloadRetry gives up after 2 retries and throws the last error", asy
     (err: unknown) => err instanceof APIError && err.status === 429
   );
 
-  assert.equal(calls, 3, "expected the initial attempt plus 2 retries, then give up");
+  assert.equal(calls, 4, "expected the initial attempt plus 3 retries, then give up");
 });
 
 test("withOverloadRetry does not retry a 400 bad request", async () => {
