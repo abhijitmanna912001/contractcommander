@@ -26,7 +26,7 @@ export function LandingWhatYouGet() {
         <div ref={ref} className={`what-you-get__grid reveal ${isVisible ? "is-visible" : ""}`}>
           <div className="landing__prose">
             <span className="section-eyebrow">The Output</span>
-            <h2 className="section-heading">See exactly what's risky — and what to do about it.</h2>
+            <h2 className="section-heading">See exactly what's risky, and what to do about it.</h2>
             <p className="section-lede">
               Every finding cites the exact clause, explains the risk in plain English, and
               suggests a fix you can bring to the negotiating table.

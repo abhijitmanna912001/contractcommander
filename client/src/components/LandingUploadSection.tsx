@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AnalysisProgress } from "./AnalysisProgress";
 import { UploadZone } from "./UploadZone";
 import { ApiError, uploadContract } from "../lib/api";
 import "./LandingUploadSection.css";
@@ -45,16 +46,9 @@ export function LandingUploadSection() {
         <div className="upload-section__card">
           <UploadZone onFileSelected={handleFileSelected} disabled={status === "uploading"} />
 
-          {status === "uploading" && (
-            <div className="upload-section__status upload-section__status--loading" role="status">
-              <span className="upload-section__spinner" aria-hidden="true" />
-              <div>
-                <p className="upload-section__status-title">Analyzing {fileName}…</p>
-                <p className="upload-section__status-subtitle">
-                  This can take 30–60 seconds — five specialist agents are reviewing your contract
-                  clause by clause.
-                </p>
-              </div>
+          {status === "uploading" && fileName && (
+            <div className="upload-section__status upload-section__status--loading">
+              <AnalysisProgress fileName={fileName} />
             </div>
           )}
 

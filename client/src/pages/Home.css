@@ -1,52 +1,20 @@
 /*
- * Landing-page palette and typography, scoped entirely to `.landing`.
- * These redefine the same custom-property names the app's shared
- * components (UploadZone, FindingCard, DisclaimerBanner) already read
- * from `:root`, so nesting them inside `.landing` re-themes them for
- * free — without touching the global tokens the Report page relies on.
+ * The homepage uses the same global theme tokens as the rest of the app
+ * (see :root in index.css) — no page-scoped re-theming here anymore, so
+ * the report page and every other page automatically match.
  */
 .landing {
-  --landing-bg: #faf7f1;
-  --landing-bg-alt: #eef1f6;
-  --landing-surface: #ffffff;
-  --landing-surface-muted: #f3eee3;
-  --landing-border: #e4dfd3;
-  --landing-ink: #16202e;
-  --landing-ink-soft: #33425a;
-  --landing-text-muted: #6b7488;
-  --landing-navy: #1f3a5c;
-  --landing-navy-deep: #142839;
-  --landing-navy-bg: rgba(31, 58, 92, 0.08);
-  --landing-navy-border: rgba(31, 58, 92, 0.3);
-  --landing-gold: #c9922b;
-  --landing-gold-deep: #a87418;
-  --landing-gold-soft: rgba(201, 146, 43, 0.14);
-  --landing-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  --landing-shadow: 0 20px 40px -20px rgba(22, 32, 46, 0.25);
-
-  /* Re-theme shared/nested components for this page only. */
-  --bg: var(--landing-bg);
-  --surface: var(--landing-surface);
-  --surface-muted: var(--landing-surface-muted);
-  --border: var(--landing-border);
-  --text: var(--landing-ink-soft);
-  --text-h: var(--landing-ink);
-  --text-muted: var(--landing-text-muted);
-  --accent: var(--landing-navy);
-  --accent-bg: var(--landing-navy-bg);
-  --accent-border: var(--landing-navy-border);
-
   display: flex;
   flex-direction: column;
-  background: var(--landing-bg);
-  color: var(--landing-ink-soft);
+  background: var(--bg);
+  color: var(--text);
   text-align: left;
   overflow-x: hidden;
 }
 
 .landing__section {
   padding: 88px 24px;
-  border-top: 1px solid var(--landing-border);
+  border-top: 1px solid var(--border);
 }
 
 .landing__section:first-child {
@@ -54,11 +22,11 @@
 }
 
 .landing__section--alt {
-  background: var(--landing-bg-alt);
+  background: var(--bg-alt);
 }
 
 .landing__container {
-  max-width: 1080px;
+  max-width: var(--content-width);
   margin: 0 auto;
 }
 
@@ -72,24 +40,24 @@
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--landing-gold-deep);
+  color: var(--gold-deep);
   margin-bottom: 14px;
 }
 
 .section-heading {
-  font-family: var(--landing-serif);
+  font-family: var(--serif);
   font-weight: 600;
   font-size: clamp(26px, 3.4vw, 36px);
   line-height: 1.2;
   letter-spacing: -0.3px;
-  color: var(--landing-ink);
+  color: var(--text-h);
   margin: 0 0 14px;
 }
 
 .section-lede {
   font-size: 16.5px;
   line-height: 1.65;
-  color: var(--landing-text-muted);
+  color: var(--text-muted);
   max-width: 620px;
 }
 

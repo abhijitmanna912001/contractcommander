@@ -76,7 +76,7 @@ export function UploadZone({ onFileSelected, disabled = false }: UploadZoneProps
         </span>
         <p className="upload-zone__title">Drag & drop your contract here</p>
         <p className="upload-zone__subtitle">
-          or <span className="upload-zone__browse">browse files</span> — PDF or plain text
+          or <span className="upload-zone__browse">browse files</span>. PDF or plain text.
         </p>
         <input
           id={inputId}
