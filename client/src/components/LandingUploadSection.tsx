@@ -29,10 +29,12 @@ export function LandingUploadSection() {
     try {
       const result = await uploadContract(file);
       navigate(`/report/${result.id}`, {
-        state:
-          result.analysisStatus === "failed"
+        state: {
+          clauseCount: result.clauseCount,
+          ...(result.analysisStatus === "failed"
             ? { analysisFailed: true, analysisError: result.analysisError }
-            : undefined,
+            : {}),
+        },
       });
     } catch (err) {
       setStatus("error");
