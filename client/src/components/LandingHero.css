@@ -18,7 +18,7 @@
   right: -120px;
   width: 420px;
   height: 420px;
-  background: radial-gradient(circle, var(--gold-soft) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-bg) 0%, transparent 70%);
 }
 
 .hero::after {
@@ -51,7 +51,7 @@
 }
 
 .hero__headline {
-  font-family: var(--serif);
+  font-family: var(--heading);
   font-weight: 600;
   font-size: clamp(34px, 6.2vw, 64px);
   line-height: 1.1;
@@ -69,30 +69,20 @@
   margin-bottom: 36px;
 }
 
+/* Hover (lift + glow) and press (scale) states are driven by Motion's
+   whileHover/whileTap on the <motion.a> in LandingHero.tsx, not CSS. */
 .hero__cta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 14px 28px;
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   background: var(--accent);
-  color: #fff;
+  color: #111315;
   font-size: 15.5px;
   font-weight: 600;
   text-decoration: none;
   box-shadow: var(--shadow);
-  transition:
-    background-color 0.15s ease,
-    transform 0.15s ease;
-}
-
-.hero__cta:hover {
-  background: var(--accent-deep);
-  transform: translateY(-1px);
-}
-
-.hero__cta:active {
-  transform: translateY(0);
 }
 
 .hero__cta span {

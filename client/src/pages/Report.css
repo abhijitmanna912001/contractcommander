@@ -50,7 +50,7 @@
   gap: 10px;
   padding: 12px 16px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--gold-soft);
+  border: 1px solid var(--accent-border);
   background: var(--surface-muted);
   max-width: 900px;
 }
@@ -104,7 +104,7 @@
 
 .report-hero__tier {
   margin: 0;
-  font-family: var(--serif);
+  font-family: var(--heading);
   font-size: 28px;
 }
 

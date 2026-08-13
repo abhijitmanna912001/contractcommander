@@ -1,8 +1,20 @@
+import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useId, useState, type ChangeEvent, type DragEvent } from "react";
 import "./UploadZone.css";
 
 const ACCEPTED_EXTENSIONS = [".pdf", ".txt"];
 const ACCEPTED_MIME_TYPES = ["application/pdf", "text/plain"];
+
+// Literal colors mirroring the CSS custom properties in index.css. Motion
+// needs concrete color values to interpolate between (it can't reliably
+// resolve var() references frame-by-frame), so the border/background states
+// below are kept in sync with --border, --accent, --accent-border,
+// --accent-bg, and --surface-muted by hand.
+const REST_BORDER = "rgba(255, 255, 255, 0.08)";
+const HOVER_BORDER = "rgba(212, 175, 55, 0.35)";
+const DRAG_BORDER = "#d4af37";
+const REST_BG = "#1c2128";
+const ACTIVE_BG = "rgba(212, 175, 55, 0.12)";
 
 interface UploadZoneProps {
   onFileSelected: (file: File) => void;
@@ -20,6 +32,7 @@ export function UploadZone({ onFileSelected, disabled = false }: UploadZoneProps
   const inputId = useId();
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const handleFile = useCallback(
     (file: File | undefined | null) => {
@@ -54,26 +67,44 @@ export function UploadZone({ onFileSelected, disabled = false }: UploadZoneProps
     event.target.value = ""; // allow re-selecting the same file after an error
   };
 
-  const classNames = [
-    "upload-zone",
-    isDragging && "upload-zone--dragging",
-    disabled && "upload-zone--disabled",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const zoneAnimate = disabled
+    ? { opacity: 0.55, borderColor: REST_BORDER, backgroundColor: REST_BG, borderWidth: 2 }
+    : isDragging
+      ? { opacity: 1, borderColor: DRAG_BORDER, backgroundColor: ACTIVE_BG, borderWidth: 3 }
+      : { opacity: 1, borderColor: REST_BORDER, backgroundColor: REST_BG, borderWidth: 2 };
+
+  const iconAnimate = shouldReduceMotion
+    ? undefined
+    : isDragging
+      ? { scale: 1.15, y: 0 }
+      : { scale: 1, y: [0, -4, 0] };
+
+  const iconTransition = shouldReduceMotion
+    ? undefined
+    : isDragging
+      ? { duration: 0.2, ease: "easeOut" as const }
+      : { duration: 3, repeat: Infinity, ease: "easeInOut" as const };
 
   return (
     <div className="upload-zone-wrapper">
-      <label
+      <motion.label
         htmlFor={inputId}
-        className={classNames}
+        className={["upload-zone", disabled && "upload-zone--disabled"].filter(Boolean).join(" ")}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
+        animate={zoneAnimate}
+        whileHover={disabled ? undefined : { borderColor: HOVER_BORDER, backgroundColor: ACTIVE_BG }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
-        <span className="upload-zone__icon" aria-hidden="true">
+        <motion.span
+          className="upload-zone__icon"
+          aria-hidden="true"
+          animate={iconAnimate}
+          transition={iconTransition}
+        >
           📄
-        </span>
+        </motion.span>
         <p className="upload-zone__title">Drag & drop your contract here</p>
         <p className="upload-zone__subtitle">
           or <span className="upload-zone__browse">browse files</span>. PDF or plain text.
@@ -86,7 +117,7 @@ export function UploadZone({ onFileSelected, disabled = false }: UploadZoneProps
           disabled={disabled}
           className="upload-zone__input"
         />
-      </label>
+      </motion.label>
       {error && (
         <p className="upload-zone__error" role="alert">
           {error}

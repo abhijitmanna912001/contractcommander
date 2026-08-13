@@ -40,12 +40,12 @@
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--accent);
   margin-bottom: 14px;
 }
 
 .section-heading {
-  font-family: var(--serif);
+  font-family: var(--heading);
   font-weight: 600;
   font-size: clamp(26px, 3.4vw, 36px);
   line-height: 1.2;

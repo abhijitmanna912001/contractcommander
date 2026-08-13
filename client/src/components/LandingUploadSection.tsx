@@ -1,9 +1,17 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnalysisProgress } from "./AnalysisProgress";
 import { UploadZone } from "./UploadZone";
 import { ApiError, uploadContract } from "../lib/api";
 import "./LandingUploadSection.css";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -6 },
+  transition: { duration: 0.25, ease: "easeOut" as const },
+};
 
 type Status = "idle" | "uploading" | "error";
 
@@ -46,14 +54,25 @@ export function LandingUploadSection() {
         <div className="upload-section__card">
           <UploadZone onFileSelected={handleFileSelected} disabled={status === "uploading"} />
 
-          {status === "uploading" && fileName && <AnalysisProgress fileName={fileName} />}
+          <AnimatePresence mode="wait">
+            {status === "uploading" && fileName && (
+              <motion.div key="uploading" {...fadeInUp}>
+                <AnalysisProgress fileName={fileName} />
+              </motion.div>
+            )}
 
-          {status === "error" && (
-            <div className="upload-section__status upload-section__status--error" role="alert">
-              <p className="upload-section__status-title">Upload failed</p>
-              <p className="upload-section__status-subtitle">{errorMessage}</p>
-            </div>
-          )}
+            {status === "error" && (
+              <motion.div
+                key="error"
+                className="upload-section__status upload-section__status--error"
+                role="alert"
+                {...fadeInUp}
+              >
+                <p className="upload-section__status-title">Upload failed</p>
+                <p className="upload-section__status-subtitle">{errorMessage}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
