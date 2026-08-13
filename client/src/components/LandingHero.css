@@ -37,15 +37,24 @@
   text-align: center;
 }
 
+/* Deliberately smaller and more spaced out than the shared .brand default
+   so the headline below reads as the dominant element on first load. */
 .hero__wordmark {
-  margin-bottom: 28px;
+  margin-bottom: 40px;
+  font-size: 13px;
+}
+
+.hero__wordmark .brand__mark {
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
 }
 
 .hero__headline {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: clamp(32px, 5.5vw, 58px);
-  line-height: 1.12;
+  font-size: clamp(34px, 6.2vw, 64px);
+  line-height: 1.1;
   letter-spacing: -0.5px;
   color: var(--text-h);
   max-width: 800px;
