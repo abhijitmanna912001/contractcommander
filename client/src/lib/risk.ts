@@ -27,7 +27,7 @@ export function getScoreTier(score: number): ScoreTierInfo {
   return {
     tier: "high",
     label: "High Risk",
-    description: "This contract carries significant risk exposure — review carefully before proceeding.",
+    description: "This contract carries significant risk exposure. Review carefully before proceeding.",
   };
 }
 

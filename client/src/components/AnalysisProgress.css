@@ -1,0 +1,128 @@
+.analysis-progress {
+  width: 100%;
+}
+
+.analysis-progress__title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--text-h);
+}
+
+.analysis-progress__subtitle {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 480px;
+}
+
+.analysis-progress__bar {
+  margin-top: 18px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.analysis-progress__bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width 0.5s ease;
+}
+
+.analysis-progress__stages {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 8px;
+  margin: 18px 0 0;
+  padding: 0;
+}
+
+.analysis-progress__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 64px;
+}
+
+.analysis-progress__stage-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 15px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  opacity: 0.6;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.analysis-progress__stage-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.analysis-progress__stage--active .analysis-progress__stage-icon {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  opacity: 1;
+  animation: analysis-progress-pulse 1.6s ease-in-out infinite;
+}
+
+.analysis-progress__stage--active .analysis-progress__stage-label {
+  color: var(--text-h);
+}
+
+.analysis-progress__stage--done .analysis-progress__stage-icon {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+  opacity: 1;
+}
+
+.analysis-progress__stage--done .analysis-progress__stage-label {
+  color: var(--text);
+}
+
+@keyframes analysis-progress-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent-bg);
+  }
+  50% {
+    box-shadow: 0 0 0 7px var(--accent-bg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .analysis-progress__stage-icon,
+  .analysis-progress__bar-fill {
+    transition: none;
+  }
+
+  .analysis-progress__stage--active .analysis-progress__stage-icon {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .analysis-progress__stage {
+    min-width: 56px;
+  }
+}

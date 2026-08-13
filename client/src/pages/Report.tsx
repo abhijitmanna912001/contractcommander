@@ -104,6 +104,14 @@ function ReportContent({
 
   return (
     <>
+      <div className="report__privacy-note">
+        <span aria-hidden="true">🔒</span>
+        <p>
+          This report is shown once. Your contract has not been saved, and this data will not be
+          accessible again.
+        </p>
+      </div>
+
       {navigationState.analysisFailed && (
         <div className="report__banner" role="alert">
           <p>

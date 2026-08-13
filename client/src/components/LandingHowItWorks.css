@@ -14,8 +14,8 @@
   gap: 6px;
   padding: 22px 16px;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--landing-border);
-  background: var(--landing-surface);
+  border: 1px solid var(--border);
+  background: var(--surface);
   text-align: center;
   transition:
     border-color 0.15s ease,
@@ -23,7 +23,7 @@
 }
 
 .pipeline__stage:hover {
-  border-color: var(--landing-gold);
+  border-color: var(--gold);
   transform: translateY(-2px);
 }
 
@@ -39,8 +39,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--landing-navy-bg);
-  border: 1px solid var(--landing-navy-border);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
   font-size: 24px;
   margin-bottom: 6px;
   transition:
@@ -50,13 +50,13 @@
 
 .pipeline__stage:hover .pipeline__stage-icon {
   transform: scale(1.06);
-  border-color: var(--landing-gold);
+  border-color: var(--gold);
 }
 
 .pipeline__stage-label {
   font-weight: 700;
   font-size: 14.5px;
-  color: var(--landing-ink);
+  color: var(--text-h);
 }
 
 .pipeline__stage-description {
@@ -64,7 +64,7 @@
   max-width: 160px;
   font-size: 12.5px;
   line-height: 1.45;
-  color: var(--landing-text-muted);
+  color: var(--text-muted);
 }
 
 .pipeline__connector {
@@ -75,7 +75,7 @@
   width: 20px;
   margin-top: 44px;
   font-size: 18px;
-  color: var(--landing-text-muted);
+  color: var(--text-muted);
 }
 
 .specialists {
@@ -96,8 +96,8 @@
   min-width: 66px;
   padding: 8px 10px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--landing-border);
-  background: var(--landing-bg);
+  border: 1px solid var(--border);
+  background: var(--bg);
   transition:
     transform 0.15s ease,
     border-color 0.15s ease;
@@ -105,7 +105,7 @@
 
 .specialists__item:hover {
   transform: translateY(-2px);
-  border-color: var(--landing-gold);
+  border-color: var(--gold);
 }
 
 .specialists__icon {
@@ -117,7 +117,7 @@
   font-size: 10.5px;
   font-weight: 600;
   line-height: 1.2;
-  color: var(--landing-ink-soft);
+  color: var(--text);
   text-align: center;
 }
 

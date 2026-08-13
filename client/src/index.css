@@ -4,21 +4,34 @@
   box-sizing: border-box;
 }
 
+/*
+ * One theme, used everywhere (homepage, upload states, report page): a warm
+ * editorial palette (cream/ivory surfaces, navy accent, gold highlight).
+ * Deliberately no `prefers-color-scheme: dark` variant — this app commits to
+ * a single consistent look regardless of the visitor's OS setting, rather
+ * than having some pages flip dark while others stay pinned light.
+ */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --text-muted: #8b8594;
-  --bg: #fff;
+  --text: #33425a;
+  --text-h: #16202e;
+  --text-muted: #6b7488;
+  --bg: #faf7f1;
+  --bg-alt: #eef1f6;
   --surface: #ffffff;
-  --surface-muted: #f6f5f8;
-  --border: #e5e4e7;
+  --surface-muted: #f3eee3;
+  --border: #e4dfd3;
   --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --accent: #1f3a5c;
+  --accent-deep: #142839;
+  --accent-bg: rgba(31, 58, 92, 0.08);
+  --accent-border: rgba(31, 58, 92, 0.3);
+
+  --gold: #c9922b;
+  --gold-deep: #a87418;
+  --gold-soft: rgba(201, 146, 43, 0.14);
+
+  --shadow: 0 20px 40px -20px rgba(22, 32, 46, 0.25);
 
   --risk-high: #dc2626;
   --risk-high-bg: rgba(220, 38, 38, 0.09);
@@ -34,13 +47,16 @@
   --radius-md: 12px;
   --radius-lg: 20px;
 
+  --content-width: 1200px;
+
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -50,39 +66,6 @@
 
   @media (max-width: 1024px) {
     font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --text-muted: #767c8a;
-    --bg: #16171d;
-    --surface: #1c1d24;
-    --surface-muted: #23242c;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-
-    --risk-high: #f87171;
-    --risk-high-bg: rgba(248, 113, 113, 0.14);
-    --risk-high-border: rgba(248, 113, 113, 0.4);
-    --risk-medium: #fbbf24;
-    --risk-medium-bg: rgba(251, 191, 36, 0.14);
-    --risk-medium-border: rgba(251, 191, 36, 0.4);
-    --risk-low: #4ade80;
-    --risk-low-bg: rgba(74, 222, 128, 0.14);
-    --risk-low-border: rgba(74, 222, 128, 0.4);
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
   }
 }
 
