@@ -109,3 +109,15 @@ export async function buildContractReport(contractId: string): Promise<RiskRepor
 
   return buildRiskReport(typedFindings);
 }
+
+// Deletes a Contract and all its Clause/RiskFinding rows. Foreign keys are
+// ON DELETE RESTRICT (see the init migration), so children must be removed
+// before the parent row — done here in one transaction so a failure partway
+// through can't leave orphaned rows behind.
+export async function deleteContractCascade(contractId: string): Promise<void> {
+  await prisma.$transaction([
+    prisma.riskFinding.deleteMany({ where: { contractId } }),
+    prisma.clause.deleteMany({ where: { contractId } }),
+    prisma.contract.delete({ where: { id: contractId } }),
+  ]);
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { CategorySummary } from "../components/CategorySummary";
 import { FindingCard } from "../components/FindingCard";
@@ -23,12 +23,21 @@ export function Report() {
   const location = useLocation();
   const navigationState = (location.state as NavigationState | null) ?? {};
   const [state, setState] = useState<LoadState>({ status: "loading" });
+  // The server deletes a contract's data right after its report is served
+  // (one-shot, no persistent storage — see the backend route). That makes a
+  // second real request for the same id a guaranteed 404, so this guards
+  // against React StrictMode's dev-only double effect invocation firing a
+  // second GET that would otherwise "lose" the real report to it.
+  const fetchedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!id) {
       setState({ status: "error", message: "No contract ID was provided." });
       return;
     }
+
+    if (fetchedIdRef.current === id) return;
+    fetchedIdRef.current = id;
 
     let cancelled = false;
     setState({ status: "loading" });
@@ -42,7 +51,7 @@ export function Report() {
         const message =
           err instanceof ApiError
             ? err.status === 404
-              ? "We couldn't find a report for this contract."
+              ? "This report has already been viewed and was automatically deleted for privacy. Upload again to get a new analysis."
               : err.message
             : "Something went wrong while loading this report.";
         setState({ status: "error", message });
