@@ -38,15 +38,19 @@ services:
         value: "4000" # matches EXPOSE 4000 in server/Dockerfile
       - key: ANTHROPIC_API_KEY
         sync: false # set manually in the Render dashboard — never committed
-      # ANTHROPIC_MODEL is intentionally omitted: server/src/services/llmClient.ts
-      # already defaults to claude-opus-5 when unset. Add it here only to override.
+      - key: ANTHROPIC_MODEL
+        value: claude-sonnet-5 # set explicitly (not sync: false) so production
+        # always uses Sonnet regardless of any future change to the code
+        # default in server/src/services/llmClient.ts — that default is
+        # currently claude-sonnet-5 too, but pinning it here means a future
+        # code change can't silently flip production onto a costlier model
+        # (this is what happened before Opus was swapped out as the default).
 
   # --- Frontend --------------------------------------------------------
   - name: contractcommander-client
     type: web
     runtime: static
     plan: free
-    region: oregon
     buildCommand: npm ci && npm run build --workspace client
     staticPublishPath: client/dist
     envVars:
@@ -63,5 +67,6 @@ services:
       # /report/:id — without this rewrite, a direct link or refresh on
       # any non-root path 404s at the static host instead of reaching
       # the app.
-      - source: "/*"
+      - type: rewrite
+        source: "/*"
         destination: /index.html
