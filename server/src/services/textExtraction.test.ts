@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { splitIntoClauses } from "./textExtraction";
+import { extractText, sanitizeExtractedText, splitIntoClauses } from "./textExtraction";
 
 const SAMPLE_CONTRACTS_DIR = join(__dirname, "../../../sample-contracts");
 
@@ -47,4 +47,55 @@ test("falls back to paragraph splitting when no numbered headings are present", 
 
   assert.equal(clauses.length, 3);
   assert.ok(clauses.every((clause) => clause.heading === null));
+});
+
+// Regression test for a real bug: some PDFs (particularly ones with tables
+// or complex formatting) make pdf-parse emit NUL and other control-character
+// artifacts, which Postgres text columns reject outright with "invalid byte
+// sequence for encoding UTF8: 0x00". Control characters are built via
+// String.fromCharCode rather than typed as escape sequences so this file
+// never has to contain a literal embedded control byte.
+test("sanitizeExtractedText strips NUL and other control characters but keeps whitespace", () => {
+  const NUL = String.fromCharCode(0);
+  const BACKSPACE = String.fromCharCode(8);
+  const VERTICAL_TAB = String.fromCharCode(11);
+  const FORM_FEED = String.fromCharCode(12);
+  const ESCAPE = String.fromCharCode(27);
+  const DEL = String.fromCharCode(127);
+
+  const dirty =
+    "Liability" +
+    NUL +
+    " clause" +
+    BACKSPACE +
+    VERTICAL_TAB +
+    FORM_FEED +
+    ESCAPE +
+    DEL +
+    " text\tindented\nnext line\r\n";
+
+  const clean = sanitizeExtractedText(dirty);
+
+  assert.ok(!clean.includes(NUL), "expected the NUL byte to be stripped");
+  for (const controlChar of [BACKSPACE, VERTICAL_TAB, FORM_FEED, ESCAPE, DEL]) {
+    assert.ok(!clean.includes(controlChar), "expected other control characters to be stripped");
+  }
+  assert.equal(clean, "Liability clause text\tindented\nnext line\r\n");
+});
+
+test("extractText sanitizes NUL bytes out of an upload (the Postgres UTF8 crash trigger)", async () => {
+  const NUL = String.fromCharCode(0);
+  const dirtyBuffer = Buffer.from(
+    `1. Liability.${NUL} Clause text extracted with an embedded null byte, as pdf-parse can produce.`,
+    "utf-8"
+  );
+
+  const text = await extractText(dirtyBuffer, "text/plain", "contract.txt");
+
+  assert.ok(!text.includes(NUL), "expected extractText to strip NUL bytes before they reach Postgres");
+
+  // The sanitized text should still split into a clause normally.
+  const clauses = splitIntoClauses(text);
+  assert.ok(clauses.some((clause) => clause.heading === "1. Liability."));
+  assert.ok(clauses.every((clause) => !clause.text.includes(NUL) && !(clause.heading ?? "").includes(NUL)));
 });
