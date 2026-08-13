@@ -10,8 +10,10 @@ export const anthropic = new Anthropic({ maxRetries: 0 });
 export const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-5";
 
 const RETRYABLE_STATUS_CODES = new Set([429, 529]); // rate limited, overloaded
-const MAX_RETRIES = 2;
-const BASE_DELAY_MS = 1000;
+// Delay before each successive retry — 1s, 3s, 6s — to ride out longer
+// overload periods on Anthropic's side than a plain doubling would cover.
+const RETRY_DELAYS_MS = [1000, 3000, 6000];
+const MAX_RETRIES = RETRY_DELAYS_MS.length;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -21,9 +23,9 @@ function isRetryableError(error: unknown): boolean {
   return error instanceof APIError && error.status !== undefined && RETRYABLE_STATUS_CODES.has(error.status);
 }
 
-// Retries an Anthropic API call up to MAX_RETRIES times with exponential
-// backoff (1s, then 2s), but only when it fails with 429 (rate limited) or
-// 529 (overloaded) — both are transient and often resolve within seconds.
+// Retries an Anthropic API call up to MAX_RETRIES times (1s, 3s, 6s
+// backoff), but only when it fails with 429 (rate limited) or 529
+// (overloaded) — both are transient and often resolve within seconds.
 // Anything else (400 bad request, 401 auth, etc.) is a real error retrying
 // won't fix, so it's rethrown immediately without delay.
 export async function withOverloadRetry<T>(call: () => Promise<T>): Promise<T> {
@@ -35,8 +37,9 @@ export async function withOverloadRetry<T>(call: () => Promise<T>): Promise<T> {
       if (attempt >= MAX_RETRIES || !isRetryableError(error)) {
         throw error;
       }
+      const delay = RETRY_DELAYS_MS[attempt];
       attempt += 1;
-      await sleep(BASE_DELAY_MS * 2 ** (attempt - 1));
+      await sleep(delay);
     }
   }
 }
