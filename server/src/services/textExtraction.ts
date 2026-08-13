@@ -6,6 +6,40 @@ export interface ExtractedClause {
   text: string;
 }
 
+// Char codes for the C0 control range (0x00-0x1F) plus DEL (0x7F) that we
+// strip, and the specific ones within that range we keep as normal
+// whitespace: tab, newline, carriage return.
+const CONTROL_RANGE_MAX = 0x1f;
+const DEL_CODE = 0x7f;
+const TAB_CODE = 0x09;
+const LF_CODE = 0x0a;
+const CR_CODE = 0x0d;
+
+function isStrippableControlChar(code: number): boolean {
+  const isControl = code <= CONTROL_RANGE_MAX || code === DEL_CODE;
+  const isPreservedWhitespace = code === TAB_CODE || code === LF_CODE || code === CR_CODE;
+  return isControl && !isPreservedWhitespace;
+}
+
+// Strips NUL and other non-printable C0 control characters. Some PDF
+// extractors (pdf-parse, especially for tables/complex layouts) emit these
+// as artifacts, and Postgres text columns reject embedded NUL outright
+// ("invalid byte sequence for encoding UTF8: 0x00"). Runs on every
+// extracted text — PDF or plain text — before it's used for clause
+// splitting or persisted. Newlines, carriage returns, tabs, and spaces are
+// preserved. Written as an explicit char-code filter rather than a regex
+// character class to avoid embedding literal control bytes in source.
+export function sanitizeExtractedText(text: string): string {
+  let result = "";
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    if (!isStrippableControlChar(code)) {
+      result += text[i];
+    }
+  }
+  return result;
+}
+
 export async function extractText(
   buffer: Buffer,
   mimeType: string | undefined,
@@ -13,12 +47,9 @@ export async function extractText(
 ): Promise<string> {
   const isPdf = mimeType === "application/pdf" || filename.toLowerCase().endsWith(".pdf");
 
-  if (isPdf) {
-    const { text } = await pdfParse(buffer);
-    return text;
-  }
+  const text = isPdf ? (await pdfParse(buffer)).text : buffer.toString("utf-8");
 
-  return buffer.toString("utf-8");
+  return sanitizeExtractedText(text);
 }
 
 interface Section {
