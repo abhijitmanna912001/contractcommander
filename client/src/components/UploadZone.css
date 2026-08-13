@@ -25,6 +25,14 @@
   pointer-events: none;
 }
 
+/* The real interactive element is the visually-hidden file input inside
+   this label, so :focus-within (not :focus) is what shows a ring for
+   keyboard users tabbing to it. */
+.upload-zone:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .upload-zone__icon {
   font-size: 38px;
   line-height: 1;

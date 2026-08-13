@@ -26,6 +26,19 @@ const STAGES: ProgressStage[] = [
   { key: "critic", icon: "🔍", label: "Critic" },
 ];
 
+// Keyed by stage, shown one at a time as the simulated progress advances —
+// reinforces which agent is "active" with more specific language than a
+// single static sentence for the whole 30-60s wait.
+const ACTIVITY_MESSAGES: Record<string, string> = {
+  commander: "Reading every clause and tagging what's at stake…",
+  liability: "Reviewing liability clauses…",
+  ip: "Checking IP ownership language…",
+  termination: "Comparing termination terms…",
+  data_privacy: "Auditing data privacy obligations…",
+  dispute: "Evaluating dispute resolution terms…",
+  critic: "Cross-validating findings across every agent…",
+};
+
 interface AnalysisProgressProps {
   fileName: string;
 }
@@ -33,14 +46,12 @@ interface AnalysisProgressProps {
 export function AnalysisProgress({ fileName }: AnalysisProgressProps) {
   const activeIndex = useSimulatedProgress(STAGES.length);
   const progressPercent = ((activeIndex + 1) / STAGES.length) * 100;
+  const activeStage = STAGES[activeIndex];
 
   return (
     <div className="analysis-progress" role="status">
       <p className="analysis-progress__title">Analyzing {fileName}</p>
-      <p className="analysis-progress__subtitle">
-        Five specialist agents are reviewing your contract clause by clause, coordinated by a
-        commander agent and cross-checked by a critic. This usually takes 30 to 60 seconds.
-      </p>
+      <p className="analysis-progress__subtitle">{ACTIVITY_MESSAGES[activeStage.key]}</p>
 
       <div className="analysis-progress__bar" aria-hidden="true">
         <div className="analysis-progress__bar-fill" style={{ width: `${progressPercent}%` }} />

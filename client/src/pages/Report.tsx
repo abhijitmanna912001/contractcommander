@@ -16,6 +16,7 @@ type LoadState =
 interface NavigationState {
   analysisFailed?: boolean;
   analysisError?: string;
+  clauseCount?: number;
 }
 
 export function Report() {
@@ -121,6 +122,31 @@ function ReportContent({
           </p>
         </div>
       )}
+
+      <div className="report-summary">
+        <div className="report-summary__stat">
+          <span className="report-summary__value">7</span>
+          <span className="report-summary__label">AI agents</span>
+        </div>
+        <span className="report-summary__divider" aria-hidden="true" />
+        {typeof navigationState.clauseCount === "number" && (
+          <>
+            <div className="report-summary__stat">
+              <span className="report-summary__value">{navigationState.clauseCount}</span>
+              <span className="report-summary__label">
+                {navigationState.clauseCount === 1 ? "clause reviewed" : "clauses reviewed"}
+              </span>
+            </div>
+            <span className="report-summary__divider" aria-hidden="true" />
+          </>
+        )}
+        <div className="report-summary__stat">
+          <span className="report-summary__value">{report.findings.length}</span>
+          <span className="report-summary__label">
+            {report.findings.length === 1 ? "finding" : "findings"}
+          </span>
+        </div>
+      </div>
 
       <section className="report-hero">
         <RiskScoreBadge score={report.riskScore} />
