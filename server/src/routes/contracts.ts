@@ -5,6 +5,7 @@ import { runContractAnalysis } from "../agents";
 import {
   buildContractReport,
   createContractWithClauses,
+  deleteContractCascade,
   persistClauseCategories,
   persistFindings,
   toClauseInputs,
@@ -89,11 +90,24 @@ contractsRouter.post(
 
 contractsRouter.get("/:id/report", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const report = await buildContractReport(req.params.id);
+    const contractId = req.params.id;
+    const report = await buildContractReport(contractId);
     if (!report) {
       res.status(404).json({ error: "Contract not found." });
       return;
     }
+
+    // ContractCommander is a one-shot upload-and-view tool: no document is
+    // kept after its report has been delivered. The delete is wired to
+    // "finish" (fired once the response is actually written to the socket)
+    // rather than run before res.json, so the viewer's own request can never
+    // race the deletion and see it fail.
+    res.on("finish", () => {
+      deleteContractCascade(contractId).catch((err) => {
+        console.error(`Failed to delete contract ${contractId} after report view:`, err);
+      });
+    });
+
     res.json(report);
   } catch (err) {
     next(err);
