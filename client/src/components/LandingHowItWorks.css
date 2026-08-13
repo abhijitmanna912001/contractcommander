@@ -23,7 +23,7 @@
 }
 
 .pipeline__stage:hover {
-  border-color: var(--gold);
+  border-color: var(--accent);
   transform: translateY(-2px);
 }
 
@@ -50,7 +50,7 @@
 
 .pipeline__stage:hover .pipeline__stage-icon {
   transform: scale(1.06);
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 .pipeline__stage-label {
@@ -105,7 +105,7 @@
 
 .specialists__item:hover {
   transform: translateY(-2px);
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 .specialists__icon {

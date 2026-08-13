@@ -5,33 +5,31 @@
 }
 
 /*
- * One theme, used everywhere (homepage, upload states, report page): a warm
- * editorial palette (cream/ivory surfaces, navy accent, gold highlight).
- * Deliberately no `prefers-color-scheme: dark` variant — this app commits to
- * a single consistent look regardless of the visitor's OS setting, rather
- * than having some pages flip dark while others stay pinned light.
+ * One theme, used everywhere (homepage, upload states, report page): a dark,
+ * premium palette with a single muted-gold accent. Deliberately no
+ * `prefers-color-scheme: light` variant — this app commits to one look
+ * regardless of the visitor's OS setting.
  */
 :root {
-  --text: #33425a;
-  --text-h: #16202e;
-  --text-muted: #6b7488;
-  --bg: #faf7f1;
-  --bg-alt: #eef1f6;
-  --surface: #ffffff;
-  --surface-muted: #f3eee3;
-  --border: #e4dfd3;
-  --code-bg: #f4f3ec;
+  --text: #c8cdd3;
+  --text-h: #f8f9fa;
+  --text-muted: #9097a1;
+  --bg: #111315;
+  --bg-alt: #161a1f;
+  /* --surface is the elevated-card tone; --surface-muted is the recessed/inset
+     tone nested inside those cards (evidence quotes, progress-bar tracks). */
+  --surface: #242a33;
+  --surface-muted: #1c2128;
+  --border: rgba(255, 255, 255, 0.08);
+  --code-bg: #1c2128;
 
-  --accent: #1f3a5c;
-  --accent-deep: #142839;
-  --accent-bg: rgba(31, 58, 92, 0.08);
-  --accent-border: rgba(31, 58, 92, 0.3);
+  --accent: #d4af37;
+  --accent-deep: #b8942b;
+  --accent-bg: rgba(212, 175, 55, 0.12);
+  --accent-border: rgba(212, 175, 55, 0.35);
 
-  --gold: #c9922b;
-  --gold-deep: #a87418;
-  --gold-soft: rgba(201, 146, 43, 0.14);
-
-  --shadow: 0 20px 40px -20px rgba(22, 32, 46, 0.25);
+  --shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.55);
+  --shadow-accent: 0 12px 28px -8px rgba(212, 175, 55, 0.35);
 
   --risk-high: #dc2626;
   --risk-high-bg: rgba(220, 38, 38, 0.09);
@@ -45,18 +43,26 @@
 
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-lg: 18px;
 
   --content-width: 1200px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  /* 8px spacing system. */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+
+  --sans: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: "Space Grotesk", system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -84,7 +90,7 @@ body {
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 700;
   color: var(--text-h);
 }
 

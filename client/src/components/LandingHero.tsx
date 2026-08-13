@@ -1,5 +1,10 @@
+import { motion, useReducedMotion } from "motion/react";
 import type { MouseEvent } from "react";
+import { HeroPipelineAnimation } from "./HeroPipelineAnimation";
 import "./LandingHero.css";
+
+const ACCENT_DEEP = "#b8942b"; // mirrors --accent-deep
+const CTA_HOVER_SHADOW = "0 12px 28px -8px rgba(212, 175, 55, 0.35)"; // mirrors --shadow-accent
 
 function scrollToUpload(event: MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
@@ -7,6 +12,8 @@ function scrollToUpload(event: MouseEvent<HTMLAnchorElement>) {
 }
 
 export function LandingHero() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="landing__section hero">
       <div className="landing__container hero__container">
@@ -27,10 +34,23 @@ export function LandingHero() {
           their work. You get one clear risk score, not forty pages of ambiguity.
         </p>
 
-        <a href="#upload-section" className="hero__cta" onClick={scrollToUpload}>
+        <motion.a
+          href="#upload-section"
+          className="hero__cta"
+          onClick={scrollToUpload}
+          whileHover={{
+            y: shouldReduceMotion ? 0 : -3,
+            backgroundColor: ACCENT_DEEP,
+            boxShadow: CTA_HOVER_SHADOW,
+          }}
+          whileTap={{ scale: 0.98, y: 0 }}
+          transition={{ type: "spring", stiffness: 420, damping: 28 }}
+        >
           Try it on your contract
           <span aria-hidden="true">↓</span>
-        </a>
+        </motion.a>
+
+        <HeroPipelineAnimation />
       </div>
     </section>
   );
