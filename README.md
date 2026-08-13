@@ -175,6 +175,12 @@ Don't have a contract handy? [`sample-contracts/`](sample-contracts/) has four r
 
 ContractCommander was built end-to-end using **Agent Orchestrator (AO)** during **The Orchestra** hackathon (August 12–13, 2026) — from initial scaffold through the full agent pipeline, frontend, deployment configuration, and this README.
 
+![AO task and PR history for this project](docs/screenshots/ao-kanban-board.png)
+_AO's task board, showing the task and PR history from building ContractCommander._
+
+![AO's browser tool verifying the live deployment](docs/screenshots/ao-live-demo-screenshot.png)
+_AO's browser tool being used to verify the live deployment after shipping._
+
 ---
 
 ## ⚠️ Disclaimer
