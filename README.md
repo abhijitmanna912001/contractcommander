@@ -1,22 +1,28 @@
-# ContractCommander
+# ⚖️ ContractCommander
 
-ContractCommander is a multi-agent contract risk analyzer. Upload a contract
-(PDF or plain text) and a pipeline of Claude-powered agents reads it clause
-by clause: a **Commander** agent tags each clause with the risk categories
-it touches, five **specialist agents** — Liability, IP, Termination,
-Data/Privacy, and Dispute — each review only their own area, a **Critic**
-agent cross-checks all five agents' findings for duplicates and
-disagreements, and a plain-code **Aggregator** turns the result into a
-0–100 risk score and a grouped report (🔴 High Risk / 🟠 Review / 🟢 Low
-Concern).
+**A multi-agent AI system that reads your contract the way a legal team would — just faster.**
 
-Built for the AO hackathon.
+Upload a contract and a pipeline of specialist Claude agents reads it clause by clause: a **Commander** agent tags what each clause touches, five **specialist agents** independently review Liability, IP, Termination, Data Privacy, and Dispute Resolution, a **Critic** agent cross-checks their findings for duplicates and disagreements, and a deterministic aggregator turns it all into one clear 0–100 risk score. No forty-page memo. No legalese. Just what's risky, why, and what to do about it.
 
-## Live demo
+<p>
+  <a href="https://contractcommander.onrender.com"><img alt="Live Demo" src="https://img.shields.io/badge/Live%20Demo-View%20App-D4AF37?style=for-the-badge"></a>
+  <a href="https://contractcommanderx.onrender.com/health"><img alt="Backend Health" src="https://img.shields.io/badge/Backend-Health%20Check-242A33?style=for-the-badge"></a>
+</p>
 
-**Live demo:** _[coming soon — deploying tomorrow, link will go here]_
+---
 
-## Architecture
+## 🔗 Live Links
+
+| | |
+|---|---|
+| **Live demo** | [contractcommander.onrender.com](https://contractcommander.onrender.com) |
+| **Backend API** | [contractcommanderx.onrender.com/health](https://contractcommanderx.onrender.com/health) — this is just the health check endpoint, not a UI; the demo link above is the actual app |
+
+> Both services run on Render's free tier, so the first request after a period of inactivity can take ~30–60s to spin back up. Give it a moment.
+
+---
+
+## 🧠 Architecture
 
 ```mermaid
 flowchart LR
@@ -36,82 +42,45 @@ flowchart LR
     AG --> R[Report]
 ```
 
-In short: **Commander → 5 specialist agents → Critic → Aggregator →
-Report.** The five specialist agents are called as sequential LLM calls
-today (not literal parallel processes) — see
-[`server/src/agents/index.ts`](server/src/agents/index.ts).
+**Commander → 5 specialist agents → Critic → Aggregator → Report.** The five specialists are called as sequential LLM calls today, not literal parallel processes — see [`server/src/agents/index.ts`](server/src/agents/index.ts). The Aggregator is plain code, not an LLM call: it's a deterministic scoring function over the Critic's output.
 
-## Structure
+---
 
-```
-.
-├── client/             React + TypeScript frontend (Vite)
-├── server/             Node.js + Express + TypeScript backend (Prisma + PostgreSQL)
-│   └── Dockerfile      production image for the server (see "Running locally with Docker" below)
-├── render.yaml         Render Blueprint for deployment
-└── sample-contracts/   test fixtures for the upload flow
-```
+## ✨ What Makes This Different
 
-### Client (`/client`)
+- **Evidence-backed, not vibes-based.** Every finding cites the exact clause it's flagging — no vague "this contract seems risky" summaries.
+- **Self-destructing reports.** Privacy by design: your contract is analyzed, the report is shown to you once, and then it's gone. Nothing is retained after that single view — see [`server/src/routes/contracts.ts`](server/src/routes/contracts.ts).
+- **Retry-resilient.** API calls to Claude automatically retry with backoff on rate limits (429) or upstream overload (529), so a busy moment on Anthropic's side doesn't sink your analysis — see [`server/src/services/llmClient.ts`](server/src/services/llmClient.ts).
+- **A real critic, not just five independent opinions.** The Critic agent cross-checks all five specialists' findings, dedupes overlapping flags, and surfaces disagreements between agents instead of silently picking one.
 
-- Vite + React + TypeScript, routed with `react-router-dom`
-- `src/pages` — the landing/upload page and the report page
-- `src/components` — reusable UI (upload zone, finding cards, risk badge, etc.)
-- `src/lib` — shared client-side utilities (API client, types, risk helpers)
+---
 
-### Server (`/server`)
+## 🚀 Running Locally
 
-- Express + TypeScript, Prisma models `Contract`, `Clause`, `RiskFinding`
-- `GET /health` — returns `{ status: "ok" }`
-- `POST /api/contracts/upload` — accepts a PDF or text file (multipart field
-  `file`), extracts text (`pdf-parse` for PDFs), splits it into clauses by
-  heading/paragraph structure, persists `Contract` + `Clause` rows, then runs
-  the analysis pipeline and persists `RiskFinding` rows.
-- `GET /api/contracts/:id/report` — returns
-  `{ riskScore, categoryCounts, findings }` for a previously analyzed
-  contract.
-- `src/agents/` — the commander, five category sub-agents, and critic:
-  prompts live in `src/agents/prompts/`, structured JSON output is enforced
-  via Zod schemas (`client.messages.parse` + `zodOutputFormat`).
-- `src/services/aggregator.ts` — plain code (no LLM call) that computes the
-  risk score and buckets findings into 🔴 High Risk / 🟠 Review / 🟢 Low
-  Concern groups.
+### Option A: Docker (recommended for the backend)
 
-## Running locally with Docker (recommended)
+> A single `docker-compose.yml` that starts the client, server, and a database together isn't in this repo yet. `server/Dockerfile` is a real, production-tested image for the backend, though — the steps below use it directly. You'll still need Node.js locally for the frontend piece (see Option B for that half).
 
-> **Note:** a `docker-compose.yml` that starts the client, server, and a
-> database together with one command isn't in this repo yet — that's
-> planned but not done. In the meantime, `server/Dockerfile` is a real,
-> tested production image for the backend; the steps below use it directly.
-> You'll still need Node.js locally for the frontend (see the "without
-> Docker" section below for that piece) until compose support lands.
-
-**Prerequisites:** Docker, and a PostgreSQL database (e.g. a free
-[Neon](https://neon.tech) instance — this is what `render.yaml` in this repo
-is configured to use in production).
+**Prerequisites:** Docker, and a PostgreSQL database (e.g. a free [Neon](https://neon.tech) instance — this is what `render.yaml` uses in production).
 
 1. Clone the repo and set up the server's environment file:
 
    ```bash
-   git clone <this-repo-url>
+   git clone https://github.com/abhijitmanna912001/contractcommander.git
    cd contractcommander
    cp server/.env.example server/.env
    ```
 
-   Edit `server/.env` and set `DATABASE_URL` to your Postgres connection
-   string and `ANTHROPIC_API_KEY` to a valid Anthropic API key.
+   Edit `server/.env` and set `DATABASE_URL` to your Postgres connection string and `ANTHROPIC_API_KEY` to a valid Anthropic API key.
 
-2. Apply the database schema (needs Node.js/npm locally for this one-time
-   step — Prisma CLI isn't bundled into the runtime image):
+2. Apply the database schema (needs Node.js/npm locally for this one-time step — the Prisma CLI isn't bundled into the runtime image):
 
    ```bash
    npm install
-   npx --workspace server prisma migrate deploy
+   cd server && npx prisma migrate deploy
    ```
 
-3. Build and run the server image from the **repo root** (the build needs
-   the whole npm-workspaces context, not just `server/` — see the comment
-   at the top of `server/Dockerfile`):
+3. Build and run the server image from the **repo root** (the build needs the whole npm-workspaces context, not just `server/` — see the comment at the top of `server/Dockerfile`):
 
    ```bash
    docker build -f server/Dockerfile -t contractcommander-server .
@@ -125,8 +94,7 @@ is configured to use in production).
    # {"status":"ok"}
    ```
 
-5. Start the frontend (not yet dockerized — see below), pointed at this
-   server:
+5. Start the frontend (not yet dockerized), pointed at this server:
 
    ```bash
    cp client/.env.example client/.env   # already defaults to http://localhost:4000
@@ -135,9 +103,9 @@ is configured to use in production).
 
    Open **http://localhost:5173**.
 
-## Running locally without Docker
+### Option B: Without Docker
 
-1. Install dependencies from the repo root (this installs both workspaces):
+1. Install dependencies from the repo root (installs both workspaces):
 
    ```bash
    npm install
@@ -150,17 +118,16 @@ is configured to use in production).
    cp client/.env.example client/.env
    ```
 
-   Edit `server/.env` and set `DATABASE_URL` to point at your PostgreSQL
-   instance, and `ANTHROPIC_API_KEY` to a valid Anthropic API key.
+   Edit `server/.env` and set `DATABASE_URL` to point at your PostgreSQL instance, and `ANTHROPIC_API_KEY` to a valid Anthropic API key.
 
 3. Generate the Prisma client and apply the database schema:
 
    ```bash
    npm run prisma:generate --workspace server
-   npx --workspace server prisma migrate deploy
+   cd server && npx prisma migrate deploy
    ```
 
-4. Run both the client and server together:
+4. Run both the client and server together from the repo root:
 
    ```bash
    npm run dev
@@ -173,35 +140,43 @@ is configured to use in production).
    npm run dev:server   # Express server with hot reload — http://localhost:4000
    ```
 
-## Sample contracts
-
-[`sample-contracts/`](sample-contracts/) has four ready-to-upload test
-fixtures spanning a range of risk levels, useful for exercising the upload
-flow without needing your own contract on hand:
-
-| File | Risk level |
-|---|---|
-| `01-high-risk-service-agreement.txt` | High |
-| `02-low-risk-mutual-nda.txt` | Low |
-| `03-medium-risk-freelance-agreement.txt` | Medium |
-| `04-long-enterprise-agreement.txt` | Long-form (18 numbered sections) |
-
-## Build
+### Build & type-check
 
 ```bash
-npm run build
+npm run build      # builds both workspaces
+npm run typecheck  # type-checks both workspaces
 ```
 
-## Type checking
+---
 
-```bash
-npm run typecheck
-```
+## 📄 Sample Contracts
 
-## Tech stack
+Don't have a contract handy? [`sample-contracts/`](sample-contracts/) has four ready-to-upload fixtures spanning a range of risk levels:
 
-- **Backend:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL
-- **Frontend:** React, TypeScript, Vite, React Router
-- **AI:** Claude (Anthropic API) — `client.messages.parse` with Zod-enforced
-  structured output for every agent in the pipeline
-- **Deployment:** Docker (`server/Dockerfile`), Render (`render.yaml`)
+| File | Risk level | Notes |
+|---|---|---|
+| `01-high-risk-service-agreement.txt` | 🔴 High | Uncapped liability, one-sided terms |
+| `02-low-risk-mutual-nda.txt` | 🟢 Low | Balanced, standard mutual NDA |
+| `03-medium-risk-freelance-agreement.txt` | 🟠 Medium | A mix of fair and lopsided clauses |
+| `04-long-enterprise-agreement.txt` | — | Long-form, 18 numbered sections — good for stress-testing clause splitting |
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL ([Neon](https://neon.tech))
+- **Frontend:** React, TypeScript, Vite, React Router, [Motion](https://motion.dev)
+- **AI:** [Claude](https://www.anthropic.com/claude) via the Anthropic TypeScript SDK — `messages.parse` with Zod-enforced structured output for every agent in the pipeline
+- **Deployment:** Docker (`server/Dockerfile`), [Render](https://render.com) (`render.yaml`)
+
+---
+
+## 🤖 Built with AO
+
+ContractCommander was built end-to-end using **Agent Orchestrator (AO)** during **The Orchestra** hackathon (August 12–13, 2026) — from initial scaffold through the full agent pipeline, frontend, deployment configuration, and this README.
+
+---
+
+## ⚠️ Disclaimer
+
+ContractCommander provides informational analysis, not legal advice. It's a tool to help you spot what's worth a closer look — always consult a qualified attorney before making decisions about a real contract.
