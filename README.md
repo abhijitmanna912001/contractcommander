@@ -16,6 +16,7 @@ Upload a contract and a pipeline of specialist Claude agents reads it clause by 
 | | |
 |---|---|
 | **Live demo** | [contractcommander.onrender.com](https://contractcommander.onrender.com) |
+| **Demo video** | [loom.com/share/d7a9edd8b613419babb963942b964d03](https://www.loom.com/share/d7a9edd8b613419babb963942b964d03) |
 | **Backend API** | [contractcommanderx.onrender.com/health](https://contractcommanderx.onrender.com/health) — this is just the health check endpoint, not a UI; the demo link above is the actual app |
 
 > Both services run on Render's free tier, so the first request after a period of inactivity can take ~30–60s to spin back up. Give it a moment.
