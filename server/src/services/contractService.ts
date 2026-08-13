@@ -114,10 +114,17 @@ export async function buildContractReport(contractId: string): Promise<RiskRepor
 // ON DELETE RESTRICT (see the init migration), so children must be removed
 // before the parent row — done here in one transaction so a failure partway
 // through can't leave orphaned rows behind.
+//
+// Uses deleteMany (not delete) for the Contract row too, so this is safe to
+// call twice for the same id: if two requests for the same report both read
+// the row before either deleted it (a genuine race, not the StrictMode
+// double-fetch — that's deduped client-side), both delete attempts just
+// affect 0-or-more rows instead of the second one throwing "record to
+// delete does not exist".
 export async function deleteContractCascade(contractId: string): Promise<void> {
   await prisma.$transaction([
     prisma.riskFinding.deleteMany({ where: { contractId } }),
     prisma.clause.deleteMany({ where: { contractId } }),
-    prisma.contract.delete({ where: { id: contractId } }),
+    prisma.contract.deleteMany({ where: { id: contractId } }),
   ]);
 }

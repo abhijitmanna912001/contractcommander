@@ -28,6 +28,15 @@ export function Report() {
   // second real request for the same id a guaranteed 404, so this guards
   // against React StrictMode's dev-only double effect invocation firing a
   // second GET that would otherwise "lose" the real report to it.
+  //
+  // Deliberately not the usual per-invocation `let cancelled` + cleanup
+  // pattern: StrictMode runs that cleanup synchronously right after the
+  // first invocation starts the fetch (before it can possibly have
+  // resolved), which would mark the *only* real request's own eventual
+  // response as stale and silently drop it — leaving the page stuck on
+  // "Loading report…" forever. Checking the ref instead of a closed-over
+  // boolean means only a genuine navigation to a different id invalidates
+  // an in-flight response.
   const fetchedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -39,15 +48,14 @@ export function Report() {
     if (fetchedIdRef.current === id) return;
     fetchedIdRef.current = id;
 
-    let cancelled = false;
     setState({ status: "loading" });
 
     getContractReport(id)
       .then((report) => {
-        if (!cancelled) setState({ status: "loaded", report });
+        if (fetchedIdRef.current === id) setState({ status: "loaded", report });
       })
       .catch((err: unknown) => {
-        if (cancelled) return;
+        if (fetchedIdRef.current !== id) return;
         const message =
           err instanceof ApiError
             ? err.status === 404
@@ -56,10 +64,6 @@ export function Report() {
             : "Something went wrong while loading this report.";
         setState({ status: "error", message });
       });
-
-    return () => {
-      cancelled = true;
-    };
   }, [id]);
 
   return (
